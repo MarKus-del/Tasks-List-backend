@@ -20,17 +20,11 @@ public class User {
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    @Size(max=60)
     private String name;
 
-    @Column(nullable = false)
-    @Size(max=60)
     private String lastName;
 
-    @Column(nullable = false)
     private String email;
 
-    @Column(nullable = false)
     private String password;
 }
