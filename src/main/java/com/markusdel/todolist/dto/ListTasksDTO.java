@@ -13,7 +13,5 @@ import java.util.List;
 @NoArgsConstructor
 public class ListTasksDTO {
 
-    private UserResponseDTO userResponseDTO;
-
     private List<TaskResponseDTO> tasksList;
 }
