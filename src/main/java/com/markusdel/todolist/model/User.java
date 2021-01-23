@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @Table(name="TB_USERS")
@@ -27,4 +28,6 @@ public class User {
     private String email;
 
     private String password;
+
+
 }
