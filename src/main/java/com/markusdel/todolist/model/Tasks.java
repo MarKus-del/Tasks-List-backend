@@ -21,6 +21,6 @@ public class Tasks {
     private String title;
     private String description;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(cascade = { CascadeType.MERGE })
     private User user;
 }

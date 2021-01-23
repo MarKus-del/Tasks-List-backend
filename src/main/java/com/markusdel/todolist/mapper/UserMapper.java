@@ -15,6 +15,10 @@ public class UserMapper {
         return  MODEL_MAPPER.map(userCreateDTO, User.class);
     }
 
+    public User toEntity (UserResponseDTO userResponseDTO) {
+        return  MODEL_MAPPER.map(userResponseDTO, User.class);
+    }
+
     public UserResponseDTO toUserResponseDTO(User user) {
         return MODEL_MAPPER.map(user, UserResponseDTO.class);
     }

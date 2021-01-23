@@ -2,10 +2,12 @@ package com.markusdel.todolist.service;
 
 import com.markusdel.todolist.model.Tasks;
 import com.markusdel.todolist.repository.TasksRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class TasksService {
 
     private TasksRepository tasksRepository;
