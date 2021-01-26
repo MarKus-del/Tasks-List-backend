@@ -8,6 +8,7 @@ import com.markusdel.todolist.exception.*;
 import com.markusdel.todolist.mapper.UserMapper;
 import com.markusdel.todolist.model.User;
 import com.markusdel.todolist.repository.UserRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
@@ -18,18 +19,21 @@ public class UserService {
 
     private UserRepository userRepository;
     private UserMapper userMapper;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
     private Utils utils;
 
-    public UserService(UserRepository userRepository, UserMapper userMapper, Utils utils) {
+    public UserService(UserRepository userRepository, UserMapper userMapper, Utils utils, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.utils = utils;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     public UserResponseDTO login(LoginDTO loginDTO) throws EmailNotFoundException {
         User user = this.returnUserByEmail(loginDTO.getEmail());
 
-        if(!user.getPassword().equals(loginDTO.getPassword())) {
+        Boolean senhaValida = bCryptPasswordEncoder.matches(loginDTO.getPassword(), user.getPassword());
+        if(!senhaValida) {
             throw new UnauthorizedException();
         }
         return userMapper.toUserResponseDTO(user);
@@ -56,7 +60,7 @@ public class UserService {
         if(byEmail.isPresent()) {
             throw new ExistingEmailException(newUser.getEmail());
         }
-
+        user.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
 
         UserResponseDTO userSaved = userMapper.toUserResponseDTO(userRepository.save(user));
         return userSaved;

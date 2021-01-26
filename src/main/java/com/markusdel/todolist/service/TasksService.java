@@ -46,7 +46,7 @@ public class TasksService {
         Tasks task = tasksRepository.findById(id)
                 .orElseThrow(() -> new TaskNotFoundException(id));
         if(!task.getUser().getId().equals(idUser)) {
-            throw new TaskNotFoundException(idUser);
+            throw new TaskNotFoundException(id);
         }
 
         return tasksMapper.toTaskResponseDTO(task);

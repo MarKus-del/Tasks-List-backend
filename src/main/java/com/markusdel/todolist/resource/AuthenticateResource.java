@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("login")
+@RequestMapping("/users/login")
 public class AuthenticateResource {
 
     private AuthenticationManager authManager;

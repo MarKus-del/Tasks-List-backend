@@ -22,7 +22,7 @@ public class UserResouce {
         this.userService = userService;
     }
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<UserResponseDTO> createUser(@RequestBody @Valid UserCreateDTO newUser) throws ExistingEmailException, InvalidEmailException {
         UserResponseDTO user = userService.createUser(newUser);
         URI uriUser = URI.create(String.format("/users/%s", user.getId()));
