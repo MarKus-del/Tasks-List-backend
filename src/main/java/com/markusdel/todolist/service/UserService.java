@@ -1,12 +1,10 @@
 package com.markusdel.todolist.service;
 
 import com.markusdel.todolist.Utils.Utils;
+import com.markusdel.todolist.dto.LoginDTO;
 import com.markusdel.todolist.dto.UserCreateDTO;
 import com.markusdel.todolist.dto.UserResponseDTO;
-import com.markusdel.todolist.exception.EmailNotFoundException;
-import com.markusdel.todolist.exception.ExistingEmailException;
-import com.markusdel.todolist.exception.InvalidEmailException;
-import com.markusdel.todolist.exception.UserNotFoundException;
+import com.markusdel.todolist.exception.*;
 import com.markusdel.todolist.mapper.UserMapper;
 import com.markusdel.todolist.model.User;
 import com.markusdel.todolist.repository.UserRepository;
@@ -26,6 +24,15 @@ public class UserService {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.utils = utils;
+    }
+
+    public UserResponseDTO login(LoginDTO loginDTO) throws EmailNotFoundException {
+        User user = this.returnUserByEmail(loginDTO.getEmail());
+
+        if(!user.getPassword().equals(loginDTO.getPassword())) {
+            throw new UnauthorizedException();
+        }
+        return userMapper.toUserResponseDTO(user);
     }
 
     public User returnUser(Long id) throws UserNotFoundException{
