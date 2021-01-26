@@ -23,9 +23,9 @@ public class Utils {
         // array com provedores de email valido
         String[] provedoresDeEmailValidos = {"gmail", "hotmail", "outlook", "yahoo"};
         Boolean provedorValido = false;
+
         for (String emailValido: provedoresDeEmailValidos) {
             if(tipoDeEmail[0].equals(emailValido)) {
-                System.out.println(tipoDeEmail[0].equals(emailValido));
                 provedorValido = true;
             }
         }

@@ -4,6 +4,7 @@ import com.markusdel.todolist.dto.ListTasksDTO;
 import com.markusdel.todolist.dto.TaskCreateDTO;
 import com.markusdel.todolist.dto.TaskResponseDTO;
 import com.markusdel.todolist.dto.UserResponseDTO;
+import com.markusdel.todolist.exception.TaskNotFoundException;
 import com.markusdel.todolist.exception.UserNotFoundException;
 import com.markusdel.todolist.mapper.TasksMapper;
 import com.markusdel.todolist.mapper.UserMapper;
@@ -41,10 +42,14 @@ public class TasksService {
         return listTasksDTO;
     }
 
-    public TaskResponseDTO getTasksById(Long id) {
-        Optional<Tasks> byId = tasksRepository.findById(id);
+    public TaskResponseDTO getTasksById(Long id, Long idUser) throws TaskNotFoundException {
+        Tasks task = tasksRepository.findById(id)
+                .orElseThrow(() -> new TaskNotFoundException(id));
+        if(!task.getUser().getId().equals(idUser)) {
+            throw new TaskNotFoundException(idUser);
+        }
 
-        return tasksMapper.toTaskResponseDTO(byId.get());
+        return tasksMapper.toTaskResponseDTO(task);
     }
 
     public TaskResponseDTO createTasks(TaskCreateDTO newTasks, Long idUser) throws UserNotFoundException {
