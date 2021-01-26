@@ -2,6 +2,8 @@ package com.markusdel.todolist.resource;
 
 import com.markusdel.todolist.dto.UserCreateDTO;
 import com.markusdel.todolist.dto.UserResponseDTO;
+import com.markusdel.todolist.exception.ExistingEmailException;
+import com.markusdel.todolist.exception.InvalidEmailException;
 import com.markusdel.todolist.exception.UserNotFoundException;
 import com.markusdel.todolist.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +23,7 @@ public class UserResouce {
     }
 
     @PostMapping
-    public ResponseEntity<UserResponseDTO> createUser(@RequestBody @Valid UserCreateDTO newUser) {
+    public ResponseEntity<UserResponseDTO> createUser(@RequestBody @Valid UserCreateDTO newUser) throws ExistingEmailException, InvalidEmailException {
         UserResponseDTO user = userService.createUser(newUser);
         URI uriUser = URI.create(String.format("/users/%s", user.getId()));
         return ResponseEntity.created(uriUser).body(user);
