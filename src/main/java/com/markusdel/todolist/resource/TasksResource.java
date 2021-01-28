@@ -11,6 +11,8 @@ import com.markusdel.todolist.model.Tasks;
 import com.markusdel.todolist.model.User;
 import com.markusdel.todolist.service.TasksService;
 import com.markusdel.todolist.service.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.config.Task;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,17 +34,32 @@ public class TasksResource {
     }
 
     @PostMapping
-    public TaskResponseDTO createTasks(@RequestBody @Valid TaskCreateDTO newTask, @PathVariable Long id) throws UserNotFoundException {
-        return tasksService.createTasks(newTask, id);
+    public ResponseEntity<TaskResponseDTO> createTasks(@RequestBody @Valid TaskCreateDTO newTask, @PathVariable Long id) throws UserNotFoundException {
+        TaskResponseDTO tasks = tasksService.createTasks(newTask, id);
+        return ResponseEntity.status(HttpStatus.CREATED).body(tasks);
     }
 
     @GetMapping
-    public List<TaskResponseDTO> getAllTasks(@PathVariable Long id) throws UserNotFoundException {
-        return tasksService.getAllTasks(id);
+    public ResponseEntity<List<TaskResponseDTO>> getAllTasks(@PathVariable Long id) throws UserNotFoundException {
+        List<TaskResponseDTO> allTasks = tasksService.getAllTasks(id);
+        return ResponseEntity.ok(allTasks);
     }
 
     @GetMapping("/{idTask}")
-    public TaskResponseDTO getTaskById(@PathVariable Long idTask, @PathVariable(name="id") Long idUser) throws TaskNotFoundException {
-        return tasksService.getTasksById(idTask, idUser);
+    public ResponseEntity<TaskResponseDTO> getTaskById(@PathVariable Long idTask, @PathVariable(name="id") Long idUser) throws TaskNotFoundException {
+        TaskResponseDTO tasksById = tasksService.getTasksById(idTask, idUser);
+        return ResponseEntity.ok(tasksById);
+    }
+
+    @PutMapping("/{idTask}")
+    public ResponseEntity<TaskResponseDTO> updateTaskById(@PathVariable long idTask, @RequestBody TaskCreateDTO newTask) throws TaskNotFoundException {
+        TaskResponseDTO taskResponseDTO = tasksService.updateTask(idTask, newTask);
+        return ResponseEntity.ok(taskResponseDTO);
+    }
+
+    @DeleteMapping("/{idTask}")
+    public ResponseEntity deleteTaskById(@PathVariable long idTask) throws TaskNotFoundException {
+        tasksService.deleteTask(idTask);
+        return ResponseEntity.noContent().build();
     }
 }

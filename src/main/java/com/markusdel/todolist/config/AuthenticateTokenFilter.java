@@ -59,7 +59,8 @@ public class AuthenticateTokenFilter extends OncePerRequestFilter {
         Boolean hasPermission = idUsuarioRequisitado.equals(idUsuario);
 
         if(isNull || !hasPermission) {
-            throw new UnauthorizedException();
+            throw new UsernameNotFoundException("\n" +
+                    "you do not have permission to access these resources");
         }
 
         UsernamePasswordAuthenticationToken autenticacao = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());

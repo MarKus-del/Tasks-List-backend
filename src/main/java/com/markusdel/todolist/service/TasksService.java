@@ -52,10 +52,29 @@ public class TasksService {
         return tasksMapper.toTaskResponseDTO(task);
     }
 
+    public Tasks getTasksById(Long id) throws TaskNotFoundException {
+        Tasks task = tasksRepository.findById(id)
+                .orElseThrow(() -> new TaskNotFoundException(id));
+        return task;
+    }
+
     public TaskResponseDTO createTasks(TaskCreateDTO newTasks, Long idUser) throws UserNotFoundException {
         User user = userMapper.toEntity(userService.getUser(idUser));
         Tasks tasks = tasksMapper.toEntity(newTasks);
         tasks.setUser(user);
         return tasksMapper.toTaskResponseDTO(tasksRepository.save(tasks));
+    }
+
+    public TaskResponseDTO updateTask(long idTasks, TaskCreateDTO newTask) throws TaskNotFoundException {
+        Tasks byId = this.getTasksById(idTasks);
+        byId.setTitle(newTask.getTitle());
+        byId.setDescription(newTask.getDescription());
+        Tasks updatedTask = tasksRepository.save(byId);
+        return tasksMapper.toTaskResponseDTO(updatedTask);
+    }
+
+    public void deleteTask(long idTasks) throws TaskNotFoundException {
+        Tasks byId = this.getTasksById(idTasks);
+        tasksRepository.delete(byId);
     }
 }
