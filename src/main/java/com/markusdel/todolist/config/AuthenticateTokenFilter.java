@@ -41,6 +41,7 @@ public class AuthenticateTokenFilter extends OncePerRequestFilter {
     private Long returnIdUser(HttpServletRequest request) {
         String uri = request.getRequestURI();
         String[] uriQuebrada = uri.split("/");
+        System.out.println(uriQuebrada.length);
         String idUsuarioRequisitado = uriQuebrada[2];
 
         if(idUsuarioRequisitado.equals("register") || idUsuarioRequisitado.equals("login") || idUsuarioRequisitado.equals("tasks") ) {
